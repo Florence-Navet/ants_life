@@ -5,6 +5,8 @@
 #ifndef ANTS_HPP
 #define ANTS_HPP
 
+#include "utils.hpp"
+
 namespace ants_life {
 
 class Ants {

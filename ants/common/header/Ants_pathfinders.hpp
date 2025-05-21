@@ -5,9 +5,11 @@
 #ifndef ANTS_PATHFINDERS_HPP
 #define ANTS_PATHFINDERS_HPP
 
+#include "utils.hpp"
+
 namespace ants_life {
 
-class ants_pathfinders {
+class Ants_pathfinders {
 
 };
 
