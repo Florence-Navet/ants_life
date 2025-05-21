@@ -3,6 +3,3 @@
 //
 
 #include "Rooms.hpp"
-
-namespace ants_life {
-} // ants_life

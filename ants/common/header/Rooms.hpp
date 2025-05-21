@@ -7,24 +7,24 @@
 
 #include "utils.hpp"
 
-namespace ants_life {
-
 class Rooms {
 public:
     string name;
-    int number_of_paths = 0;
-    // Rooms **next_rooms{};
-    explicit Rooms(string name) : name(std::move(name)) {}
-    Rooms(const Rooms&) = delete;
-    ~Rooms() = default;
-    Rooms& operator=(const Rooms&) = delete;
+    int capacity;
+    unsigned long long number_of_paths = 0;
+    std::vector<weak_ptr<Rooms>> next_rooms;
+    int occupying_ants;
 
-    // void declare_number_of_paths(const int number_of_paths) {
-    //     next_rooms = new Rooms*[number_of_paths];
-    // }
+    explicit Rooms(string name, const int capacity = 1) : name(move(name)), capacity(capacity){}
+    // Rooms(const Rooms&) = delete;
+    // ~Rooms() = default;
+    // Rooms& operator=(const Rooms&) = delete;
+
+    void declare_paths(const vector<weak_ptr<Rooms>> &next_rooms) {
+        this->next_rooms = next_rooms;
+        this->number_of_paths = next_rooms.size();
+    }
 
 };
-
-} // ants_life
 
 #endif //ROOMS_HPP

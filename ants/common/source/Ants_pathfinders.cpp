@@ -3,6 +3,3 @@
 //
 
 #include "Ants_pathfinders.hpp"
-
-namespace ants_life {
-} // ants_life

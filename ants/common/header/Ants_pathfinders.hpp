@@ -7,12 +7,8 @@
 
 #include "utils.hpp"
 
-namespace ants_life {
-
 class Ants_pathfinders {
 
 };
-
-} // ants_life
 
 #endif //ANTS_PATHFINDERS_HPP

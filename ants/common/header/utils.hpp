@@ -9,14 +9,18 @@
 #include <string>
 #include <utility>
 #include <memory>
+#include <algorithm>
+#include <vector>
 
 using namespace std;
 
-#ifndef MAIN_HPP
-    #include "Ants.hpp"
+#ifndef ANTS_INCLUDED
     #include "Rooms.hpp"
+#endif //ANTS_INCLUDED
+
+#ifndef MAIN_INCLUDED
+    #include "Ants.hpp"
     #include "Ants_pathfinders.hpp"
-    using namespace ants_life;
-#endif // MAIN_HPP
+#endif //MAIN_INCLUDED
 
 #endif //UTILS_HPP

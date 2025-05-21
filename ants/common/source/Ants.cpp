@@ -3,6 +3,3 @@
 //
 
 #include "Ants.hpp"
-
-namespace ants_life {
-} // ants_life

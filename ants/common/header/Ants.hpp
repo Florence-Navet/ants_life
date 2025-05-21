@@ -7,12 +7,16 @@
 
 #include "utils.hpp"
 
-namespace ants_life {
+class Rooms;
 
 class Ants {
+public:
+    int id;
+    weak_ptr<Rooms> current_room;
+    vector<shared_ptr<Rooms>> explored_rooms;
+
+    explicit Ants(const int id, const weak_ptr<Rooms> &current_room) : id(id), current_room(current_room) {};
 
 };
-
-} // ants_life
 
 #endif //ANTS_HPP
