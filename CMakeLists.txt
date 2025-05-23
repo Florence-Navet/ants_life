@@ -19,5 +19,5 @@ add_executable(ants_life
         ants/common/header/utils.hpp
         ants/common/source/Rooms.cpp
         ants/common/header/Rooms.hpp
-        ants/common/source/ants_pathfinders.cpp
-        ants/common/header/ants_pathfinders.hpp)
+        ants/common/source/Anthills.cpp
+        ants/common/header/Anthills.hpp)

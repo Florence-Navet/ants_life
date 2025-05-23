@@ -8,6 +8,7 @@
 #include "utils.hpp"
 
 class Rooms;
+class Anthills;
 
 class Ants {
 public:
@@ -29,7 +30,7 @@ public:
 
     void ant_move(bool went_back=false);
 
-    void ant_wait();
+    void ant_wait(bool wait_in_dorms=false);
 };
 
 #endif //ANTS_HPP

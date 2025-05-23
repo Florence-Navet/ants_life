@@ -7,6 +7,9 @@
 
 #include "utils.hpp"
 
+class Ants;
+class Anthills;
+
 class Rooms {
 public:
     string name;
@@ -18,7 +21,7 @@ public:
     explicit Rooms(string name, const int capacity = 1) : name(move(name)), capacity(capacity){}
 
     void declare_paths(const vector<weak_ptr<Rooms>> &next_rooms) {
-        this->next_rooms = move(next_rooms);
+        this->next_rooms = next_rooms;
         this->number_of_paths = next_rooms.size();
     }
 

@@ -14,13 +14,22 @@
 
 using namespace std;
 
-#ifndef ANTS_INCLUDED
+#if defined(ANTS_HPP) & !defined(ANTS_INCLUDED)
+    #define ANTS_INCLUDED
     #include "Rooms.hpp"
 #endif //ANTS_INCLUDED
 
-#ifndef MAIN_INCLUDED
+#if defined(MAIN_HPP) & !defined(MAIN_INCLUDED)
+    #define MAIN_INCLUDED
+    #include "Rooms.hpp"
     #include "Ants.hpp"
-    #include "Ants_pathfinders.hpp"
+    #include "Anthills.hpp"
 #endif //MAIN_INCLUDED
+
+#if defined(ANTHILLS_HPP) & !defined(ANTHILLS_INCLUDED)
+    #define ANTHILLS_INCLUDED
+    #include "Ants.hpp"
+    #include "Rooms.hpp"
+#endif //ANTHILLS_INCLUDED
 
 #endif //UTILS_HPP

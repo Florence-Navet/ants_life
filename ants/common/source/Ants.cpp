@@ -5,9 +5,13 @@
 #include "Ants.hpp"
 
 int Ants::check_paths() {
-    // return -1 : wait, 0 : go back, 1 : explore, 2 : move towards dorms, 3 : found dorms
+    // return -1 : wait, 0 : go back, 1 : explore, 2 : move towards dorms, 3 : found dorms, 4: wait in dorms, no print
 
     string sd_name = "Sd";
+
+    if (current_room.lock()->name == sd_name) {
+        return 4;
+    }
 
     const auto dorms_iterator = find_if(
         current_room.lock()->next_rooms.begin(),
@@ -82,16 +86,18 @@ void Ants::act() {
     const int current_action = check_paths();
 
     if (current_action == -1) {
-        ant_wait();
-
-    } else {
+        ant_wait(false);
+    } else if (current_action == 4) {
+        ant_wait(true);
+    }else {
         if (current_action == 0) {
             ant_move(true);
         } else {
-            ant_move();
+            ant_move(false);
         }
 
         if (current_action == 3) {
+            path_from_entry.push_back(current_room);
             for (auto vector_iterator = found_paths.begin(); vector_iterator != found_paths.end(); ++vector_iterator) {
                 const long long unsigned vector_index = distance(found_paths.begin(), vector_iterator);
                 bool path_different = false;
@@ -113,7 +119,7 @@ void Ants::act() {
 
 void Ants::ant_move(const bool went_back) {
     ant_status = "La fourmi " + to_string(id) + " se deplace de la salle " +
-        current_room.lock()->name + " vers la salle " + next_room.lock()->name;
+        current_room.lock()->name + " vers la salle " + next_room.lock()->name + "\n";
 
     current_room.lock()->leave_room();
 
@@ -138,6 +144,10 @@ void Ants::ant_move(const bool went_back) {
     current_room = next_room;
 }
 
-void Ants::ant_wait() {
-    ant_status = "La fourmi " + to_string(id) + " attend en salle " + current_room.lock()->name + ".";
+void Ants::ant_wait(const bool wait_in_dorms) {
+    if (wait_in_dorms) {
+        ant_status = "";
+    } else {
+        ant_status = "La fourmi " + to_string(id) + " attend en salle " + current_room.lock()->name + ".\n";
+    }
 }
