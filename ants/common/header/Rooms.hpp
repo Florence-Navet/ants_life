@@ -12,17 +12,25 @@ public:
     string name;
     int capacity;
     unsigned long long number_of_paths = 0;
-    std::vector<weak_ptr<Rooms>> next_rooms;
-    int occupying_ants;
+    vector<weak_ptr<Rooms>> next_rooms;
+    int occupying_ants = 0;
 
     explicit Rooms(string name, const int capacity = 1) : name(move(name)), capacity(capacity){}
-    // Rooms(const Rooms&) = delete;
-    // ~Rooms() = default;
-    // Rooms& operator=(const Rooms&) = delete;
 
     void declare_paths(const vector<weak_ptr<Rooms>> &next_rooms) {
-        this->next_rooms = next_rooms;
+        this->next_rooms = move(next_rooms);
         this->number_of_paths = next_rooms.size();
+    }
+
+    bool is_room_free() const {
+        return capacity - occupying_ants > 0;
+    }
+
+    void enter_room() {
+        occupying_ants++;
+    }
+    void leave_room() {
+        occupying_ants--;
     }
 
 };
