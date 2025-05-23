@@ -70,7 +70,7 @@ int Ants::check_paths() {
         return 1;
     }
 
-    if (path_from_entry.empty() == false) {
+    if (path_from_entry.empty() == false && current_room.lock()->next_rooms.size() == 1) {
         const auto entry_iterator = path_from_entry.end() - 1;
         const long long unsigned index = distance(path_from_entry.begin(), entry_iterator);
         if (path_from_entry.at(index).lock()->is_room_free()) {
@@ -83,20 +83,14 @@ int Ants::check_paths() {
 }
 
 void Ants::act() {
-    const int current_action = check_paths();
+    ant_action = check_paths();
 
-    if (current_action == -1) {
-        ant_wait(false);
-    } else if (current_action == 4) {
-        ant_wait(true);
+    if (ant_action == -1 || ant_action == 4) {
+        ant_wait();
     }else {
-        if (current_action == 0) {
-            ant_move(true);
-        } else {
-            ant_move(false);
-        }
+        ant_move();
 
-        if (current_action == 3) {
+        if (ant_action == 3) {
             path_from_entry.push_back(current_room);
             for (auto vector_iterator = found_paths.begin(); vector_iterator != found_paths.end(); ++vector_iterator) {
                 const long long unsigned vector_index = distance(found_paths.begin(), vector_iterator);
@@ -115,15 +109,19 @@ void Ants::act() {
             }
         }
     }
+    //debug for ant 48
+    if (id == 48) {
+        cout << endl;
+    }
 }
 
-void Ants::ant_move(const bool went_back) {
+void Ants::ant_move() {
     ant_status = "La fourmi " + to_string(id) + " se deplace de la salle " +
         current_room.lock()->name + " vers la salle " + next_room.lock()->name + "\n";
 
     current_room.lock()->leave_room();
 
-    if (went_back == true) {
+    if (ant_action == 0) {
         path_from_entry.pop_back();
     } else {
         path_from_entry.push_back(current_room);
@@ -144,8 +142,8 @@ void Ants::ant_move(const bool went_back) {
     current_room = next_room;
 }
 
-void Ants::ant_wait(const bool wait_in_dorms) {
-    if (wait_in_dorms) {
+void Ants::ant_wait() {
+    if (ant_action == 4) {
         ant_status = "";
     } else {
         ant_status = "La fourmi " + to_string(id) + " attend en salle " + current_room.lock()->name + ".\n";

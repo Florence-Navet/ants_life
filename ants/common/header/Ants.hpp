@@ -15,6 +15,8 @@ public:
     int id;
     weak_ptr<Rooms> current_room;
     weak_ptr<Rooms> next_room;
+
+    int ant_action;
     string ant_status;
 
     vector<weak_ptr<Rooms>> explored_rooms;
@@ -28,9 +30,9 @@ public:
 
     void act();
 
-    void ant_move(bool went_back=false);
+    void ant_move();
 
-    void ant_wait(bool wait_in_dorms=false);
+    void ant_wait();
 };
 
 #endif //ANTS_HPP
