@@ -4,20 +4,6 @@
 
 #include "Anthills.hpp"
 
-void  Anthills::define_basic_information(const int anthill_id,
-        const int number_of_rooms, const int number_of_ants,
-        vector<int> rooms_different_capacity, vector<int> capacities) {
-    this->anthill_id = anthill_id;
-    this->number_of_rooms = number_of_rooms;
-    this->number_of_ants = number_of_ants;
-    this->rooms_different_capacity = move(rooms_different_capacity);
-    this->capacities = move(capacities);
-
-    this->saved_rooms.resize(number_of_rooms + 2);
-    this->pointer_rooms.resize(number_of_rooms + 2);
-    this->saved_ants.resize(number_of_ants);
-};
-
 void Anthills::generate_ants() {
     for (int x = 0 ; x < number_of_ants ; x++) {
         saved_ants.at(x) = make_shared<Ants>(x + 1, pointer_rooms.at(0));
@@ -42,7 +28,7 @@ void Anthills::generate_rooms() {
                     rooms_different_capacity.begin(),
                     room_capacity_iterator
                     );
-                saved_rooms.at(x)->capacity = capacities.at(index);
+                saved_rooms.at(x)->capacity = this->different_capacities.at(index);
             }
         }
     }
@@ -57,189 +43,37 @@ void Anthills::generate_rooms() {
 }
 
 void Anthills::generate_paths() const {
-    switch (this->anthill_id) {
 
-            case 0:
-            anthill_zero();
-            break;
+    const vector<vector<int>> anthill_zero_path = read_anthill_paths_json_file(anthill_id);
 
-            case 1:
-            anthill_one();
-            break;
+    for (int vector_index = 0; vector_index != anthill_zero_path.size(); vector_index++) {
 
-            case 2:
-            anthill_two();
-            break;
+        vector<weak_ptr<Rooms>> next_rooms;
 
-            case 3:
-            anthill_three();
-            break;
+        next_rooms.reserve(anthill_zero_path.at(vector_index).size());
 
-            case 4:
-            anthill_four();
-            break;
+        for (const int index : anthill_zero_path.at(vector_index)) {
+            next_rooms.push_back(pointer_rooms.at(index));
+        }
 
-            case 5:
-            anthill_five();
-            break;
-
-        default:
-            return;
+        saved_rooms.at(vector_index)->declare_paths(next_rooms);
+        cout << endl;
     }
-}
 
-void Anthills::anthill_zero() const {
-    const vector<weak_ptr<Rooms>> sv_next_rooms = {pointer_rooms.at(1)};
-    saved_rooms.at(0)->declare_paths(sv_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s1_next_rooms = {pointer_rooms.at(0), pointer_rooms.at(2)};
-    saved_rooms.at(1)->declare_paths(s1_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s2_next_rooms = {pointer_rooms.at(1), pointer_rooms.at(3)};
-    saved_rooms.at(2)->declare_paths(s2_next_rooms);
-
-    const vector<weak_ptr<Rooms>> sd_next_rooms = {pointer_rooms.at(2)};
-    saved_rooms.at(3)->declare_paths(sd_next_rooms);
-    cout << endl;
-}
-
-void Anthills::anthill_one() const {
-    const vector<weak_ptr<Rooms>> sv_next_rooms = {pointer_rooms.at(1), pointer_rooms.at(2)};
-    saved_rooms.at(0)->declare_paths(sv_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s1_next_rooms = {pointer_rooms.at(0), pointer_rooms.at(3)};
-    saved_rooms.at(1)->declare_paths(s1_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s2_next_rooms = {pointer_rooms.at(0), pointer_rooms.at(3)};
-    saved_rooms.at(2)->declare_paths(s2_next_rooms);
-
-    const vector<weak_ptr<Rooms>> sd_next_rooms = {pointer_rooms.at(1), pointer_rooms.at(2)};
-    saved_rooms.at(3)->declare_paths(sd_next_rooms);
-}
-
-void Anthills::anthill_two() const {
-    const vector<weak_ptr<Rooms>> sv_next_rooms = {pointer_rooms.at(1), pointer_rooms.at(3)};
-    saved_rooms.at(0)->declare_paths(sv_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s1_next_rooms = {pointer_rooms.at(0), pointer_rooms.at(2)};
-    saved_rooms.at(1)->declare_paths(s1_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s2_next_rooms = {pointer_rooms.at(1), pointer_rooms.at(3)};
-    saved_rooms.at(2)->declare_paths(s2_next_rooms);
-
-    const vector<weak_ptr<Rooms>> sd_next_rooms = {pointer_rooms.at(0), pointer_rooms.at(2)};
-    saved_rooms.at(3)->declare_paths(sd_next_rooms);
-}
-
-void Anthills::anthill_three() const {
-    const vector<weak_ptr<Rooms>> sv_next_rooms = {pointer_rooms.at(1)};
-    saved_rooms.at(0)->declare_paths(sv_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s1_next_rooms = {pointer_rooms.at(0), pointer_rooms.at(2),
-        pointer_rooms.at(4)};
-    saved_rooms.at(1)->declare_paths(s1_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s2_next_rooms = {pointer_rooms.at(1), pointer_rooms.at(3)};
-    saved_rooms.at(2)->declare_paths(s2_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s3_next_rooms = {pointer_rooms.at(2)};
-    saved_rooms.at(3)->declare_paths(s3_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s4_next_rooms = {pointer_rooms.at(1), pointer_rooms.at(5)};
-    saved_rooms.at(4)->declare_paths(s4_next_rooms);
-
-    const vector<weak_ptr<Rooms>> sd_next_rooms = {pointer_rooms.at(4)};
-    saved_rooms.at(5)->declare_paths(sd_next_rooms);
-}
-
-void Anthills::anthill_four() const {
-    const vector<weak_ptr<Rooms>> sv_next_rooms = {pointer_rooms.at(1)};
-    saved_rooms.at(0)->declare_paths(sv_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s1_next_rooms = {pointer_rooms.at(0), pointer_rooms.at(2),
-        pointer_rooms.at(3)};
-    saved_rooms.at(1)->declare_paths(s1_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s2_next_rooms = {pointer_rooms.at(1), pointer_rooms.at(4)};
-    saved_rooms.at(2)->declare_paths(s2_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s3_next_rooms = {pointer_rooms.at(1), pointer_rooms.at(4)};
-    saved_rooms.at(3)->declare_paths(s3_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s4_next_rooms = {pointer_rooms.at(2), pointer_rooms.at(3),
-        pointer_rooms.at(5), pointer_rooms.at(6)};
-    saved_rooms.at(4)->declare_paths(s4_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s5_next_rooms = {pointer_rooms.at(4), pointer_rooms.at(7)};
-    saved_rooms.at(5)->declare_paths(s5_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s6_next_rooms = {pointer_rooms.at(4), pointer_rooms.at(7)};
-    saved_rooms.at(6)->declare_paths(s6_next_rooms);
-
-    const vector<weak_ptr<Rooms>> sd_next_rooms = {pointer_rooms.at(5), pointer_rooms.at(6)};
-    saved_rooms.at(7)->declare_paths(sd_next_rooms);
-}
-
-void Anthills::anthill_five() const {
-    const vector<weak_ptr<Rooms>> sv_next_rooms = {pointer_rooms.at(1)};
-    saved_rooms.at(0)->declare_paths(sv_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s1_next_rooms = {pointer_rooms.at(0), pointer_rooms.at(2),
-        pointer_rooms.at(6)};
-    saved_rooms.at(1)->declare_paths(s1_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s2_next_rooms = {pointer_rooms.at(1), pointer_rooms.at(3),
-        pointer_rooms.at(5)};
-    saved_rooms.at(2)->declare_paths(s2_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s3_next_rooms = {pointer_rooms.at(2), pointer_rooms.at(4)};
-    saved_rooms.at(3)->declare_paths(s3_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s4_next_rooms = {pointer_rooms.at(3), pointer_rooms.at(5),
-        pointer_rooms.at(15)};
-    saved_rooms.at(4)->declare_paths(s4_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s5_next_rooms = {pointer_rooms.at(2), pointer_rooms.at(4)};
-    saved_rooms.at(5)->declare_paths(s5_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s6_next_rooms = {pointer_rooms.at(1), pointer_rooms.at(7),
-        pointer_rooms.at(8)};
-    saved_rooms.at(6)->declare_paths(s6_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s7_next_rooms = {pointer_rooms.at(2), pointer_rooms.at(9),
-        pointer_rooms.at(10)};
-    saved_rooms.at(7)->declare_paths(s7_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s8_next_rooms = {pointer_rooms.at(6), pointer_rooms.at(11),
-        pointer_rooms.at(12)};
-    saved_rooms.at(8)->declare_paths(s8_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s9_next_rooms = {pointer_rooms.at(7), pointer_rooms.at(14)};
-    saved_rooms.at(9)->declare_paths(s9_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s10_next_rooms = {pointer_rooms.at(7), pointer_rooms.at(14),
-        pointer_rooms.at(5), pointer_rooms.at(6)};
-    saved_rooms.at(10)->declare_paths(s10_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s11_next_rooms = {pointer_rooms.at(8), pointer_rooms.at(12),
-        pointer_rooms.at(13)};
-    saved_rooms.at(11)->declare_paths(s11_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s12_next_rooms = {pointer_rooms.at(8), pointer_rooms.at(11),
-        pointer_rooms.at(13)};
-    saved_rooms.at(12)->declare_paths(s12_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s13_next_rooms = {pointer_rooms.at(11), pointer_rooms.at(12),
-        pointer_rooms.at(15)};
-    saved_rooms.at(13)->declare_paths(s13_next_rooms);
-
-    const vector<weak_ptr<Rooms>> s14_next_rooms = {pointer_rooms.at(9), pointer_rooms.at(10),
-        pointer_rooms.at(15)};
-    saved_rooms.at(14)->declare_paths(s14_next_rooms);
-
-    const vector<weak_ptr<Rooms>> sd_next_rooms = {pointer_rooms.at(13), pointer_rooms.at(14),
-        pointer_rooms.at(4)};
-    saved_rooms.at(15)->declare_paths(sd_next_rooms);
+    // const vector<function<void()>> anthill_path_generation = {
+    //     [this]{ anthill_zero(); },
+    //     [this]{ anthill_one(); },
+    //     [this]{ anthill_two(); },
+    //     [this]{ anthill_three(); },
+    //     [this]{ anthill_four(); },
+    //     [this]{ anthill_five(); },
+    //     [this]{ anthill_everything(); },
+    //     [this]{ anthill_3d(); },
+    //     [this]{ anthill_waiting(); },
+    //     [this]{ anthill_corridors(); }
+    // };
+    //
+    // anthill_path_generation.at(anthill_id)();
 }
 
 void Anthills::reset_rooms() {
