@@ -2,8 +2,8 @@
 // Created by josur on 20/05/2025.
 //
 
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef UTILS_H
+#define UTILS_H
 
 #include <iostream>
 #include <string>
@@ -18,7 +18,8 @@
 using namespace std;
 using namespace nlohmann;
 
-typedef struct {
+typedef struct
+{
     int id;
     int number_of_ants;
     int number_of_rooms;
@@ -36,36 +37,34 @@ const array<string, 10> anthill_names = {
     "anthill_3d",
     "anthill_everything",
     "anthill_waiting",
-    "anthill_corridors"
-};
+    "anthill_corridors"};
 
 anthill_basic_information read_anthill_json_file(int anthill_index);
 
 vector<vector<int>> read_anthill_paths_json_file(int anthill_index);
 
+#if defined(ANTS_H) & !defined(ANTS_INCLUDED)
+#define ANTS_INCLUDED
 
-#if defined(ANTS_HPP) & !defined(ANTS_INCLUDED)
-    #define ANTS_INCLUDED
+#include "Rooms.h"
 
-    #include "Rooms.hpp"
+#endif // ANTS_INCLUDED
 
-#endif //ANTS_INCLUDED
+#if defined(MAIN_H) & !defined(MAIN_INCLUDED)
+#define MAIN_INCLUDED
 
-#if defined(MAIN_HPP) & !defined(MAIN_INCLUDED)
-    #define MAIN_INCLUDED
+#include "Rooms.h"
+#include "Ants.h"
+#include "Anthills.h"
 
-    #include "Rooms.hpp"
-    #include "Ants.hpp"
-    #include "Anthills.hpp"
+#endif // MAIN_INCLUDED
 
-#endif //MAIN_INCLUDED
+#if defined(ANTHILLS_H) & !defined(ANTHILLS_INCLUDED)
+#define ANTHILLS_INCLUDED
 
-#if defined(ANTHILLS_HPP) & !defined(ANTHILLS_INCLUDED)
-    #define ANTHILLS_INCLUDED
+#include "Ants.h"
+#include "Rooms.h"
 
-    #include "Ants.hpp"
-    #include "Rooms.hpp"
+#endif // ANTHILLS_INCLUDED
 
-#endif //ANTHILLS_INCLUDED
-
-#endif //UTILS_HPP
+#endif // UTILS_HPP

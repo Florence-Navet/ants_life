@@ -2,11 +2,12 @@
 // Created by josur on 20/05/2025.
 //
 
-#include "main.hpp"
+#include "main.h"
 
 vector<vector<weak_ptr<Rooms>>> Ants::found_paths;
 
-int main() {
+int main()
+{
     // anthill 0-5, 6 : 3d, 7 : everything, 8 : waiting, 9 : corridors
 
     constexpr long chosen_anthill = 5;

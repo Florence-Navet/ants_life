@@ -1,0 +1,32 @@
+[
+{
+  "directory": "C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/ants/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/ANTS.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\ANTS.dir\\ants\\source\\main.cpp.obj -c C:\\Users\\enola\\Desktop\\LAPLATEFORMEEXERCICE\\LAPLATEFORME2025\\c++\\ants_life\\ants\\source\\main.cpp",
+  "file": "C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/ants/source/main.cpp",
+  "output": "CMakeFiles/ANTS.dir/ants/source/main.cpp.obj"
+},
+{
+  "directory": "C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/ants/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/ANTS.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\ANTS.dir\\ants\\common\\source\\Anthills.cpp.obj -c C:\\Users\\enola\\Desktop\\LAPLATEFORMEEXERCICE\\LAPLATEFORME2025\\c++\\ants_life\\ants\\common\\source\\Anthills.cpp",
+  "file": "C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/ants/common/source/Anthills.cpp",
+  "output": "CMakeFiles/ANTS.dir/ants/common/source/Anthills.cpp.obj"
+},
+{
+  "directory": "C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/ants/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/ANTS.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\ANTS.dir\\ants\\common\\source\\Ants.cpp.obj -c C:\\Users\\enola\\Desktop\\LAPLATEFORMEEXERCICE\\LAPLATEFORME2025\\c++\\ants_life\\ants\\common\\source\\Ants.cpp",
+  "file": "C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/ants/common/source/Ants.cpp",
+  "output": "CMakeFiles/ANTS.dir/ants/common/source/Ants.cpp.obj"
+},
+{
+  "directory": "C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/ants/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/ANTS.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\ANTS.dir\\ants\\common\\source\\Rooms.cpp.obj -c C:\\Users\\enola\\Desktop\\LAPLATEFORMEEXERCICE\\LAPLATEFORME2025\\c++\\ants_life\\ants\\common\\source\\Rooms.cpp",
+  "file": "C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/ants/common/source/Rooms.cpp",
+  "output": "CMakeFiles/ANTS.dir/ants/common/source/Rooms.cpp.obj"
+},
+{
+  "directory": "C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/ants/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe  @CMakeFiles/ANTS.dir/includes_CXX.rsp -g -std=gnu++20 -o CMakeFiles\\ANTS.dir\\ants\\common\\source\\utils.cpp.obj -c C:\\Users\\enola\\Desktop\\LAPLATEFORMEEXERCICE\\LAPLATEFORME2025\\c++\\ants_life\\ants\\common\\source\\utils.cpp",
+  "file": "C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/ants/common/source/utils.cpp",
+  "output": "CMakeFiles/ANTS.dir/ants/common/source/utils.cpp.obj"
+}
+]

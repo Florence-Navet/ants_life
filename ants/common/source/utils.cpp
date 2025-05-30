@@ -2,9 +2,10 @@
 // Created by josur on 20/05/2025.
 //
 
-#include "utils.hpp"
+#include "utils.h"
 
-anthill_basic_information read_anthill_json_file(const int anthill_index) {
+anthill_basic_information read_anthill_json_file(const int anthill_index)
+{
 
     anthill_basic_information anthill;
 
@@ -18,18 +19,21 @@ anthill_basic_information read_anthill_json_file(const int anthill_index) {
     anthill.number_of_rooms = chosen_anthill_data.at("number_of_rooms");
     anthill.number_of_ants = chosen_anthill_data.at("number_of_ants");
 
-    for (const auto &data_vector_units : chosen_anthill_data.at("rooms_different_capacity")) {
+    for (const auto &data_vector_units : chosen_anthill_data.at("rooms_different_capacity"))
+    {
         anthill.rooms_different_capacity.push_back(data_vector_units);
     }
 
-    for (const auto &data_vector_unit : chosen_anthill_data.at("different_capacities")) {
+    for (const auto &data_vector_unit : chosen_anthill_data.at("different_capacities"))
+    {
         anthill.different_capacities.push_back(data_vector_unit);
     }
 
     return anthill;
 }
 
-vector<vector<int>> read_anthill_paths_json_file(const int anthill_index) {
+vector<vector<int>> read_anthill_paths_json_file(const int anthill_index)
+{
 
     vector<vector<int>> anthill_paths;
 
@@ -43,11 +47,13 @@ vector<vector<int>> read_anthill_paths_json_file(const int anthill_index) {
 
     int vector_index = 0;
 
-    for (int path_index = 0; path_index < chosen_anthill_data.size(); path_index++) {
+    for (int path_index = 0; path_index < chosen_anthill_data.size(); path_index++)
+    {
 
         anthill_paths.at(vector_index).reserve(chosen_anthill_data.at(to_string(path_index)).size());
 
-        for (const int room_index : chosen_anthill_data.at(to_string(path_index))) {
+        for (const int room_index : chosen_anthill_data.at(to_string(path_index)))
+        {
 
             anthill_paths.at(vector_index).push_back(room_index);
         }

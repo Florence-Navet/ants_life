@@ -2,15 +2,16 @@
 // Created by josur on 20/05/2025.
 //
 
-#ifndef ANTS_HPP
-#define ANTS_HPP
+#ifndef ANTS_H
+#define ANTS_H
 
-#include "utils.hpp"
+#include "utils.h"
 
 class Rooms;
 class Anthills;
 
-class Ants {
+class Ants
+{
 public:
     int id;
     weak_ptr<Rooms> current_room;
@@ -23,7 +24,8 @@ public:
 
     string ant_status;
 
-    enum ant_action {
+    enum ant_action
+    {
         WAIT,
         GO_BACK,
         EXPLORE,
@@ -36,23 +38,30 @@ public:
 
     static vector<vector<weak_ptr<Rooms>>> found_paths;
 
-    struct compare_by_size {
-        bool operator() (const vector<weak_ptr<Rooms>> &path_a, const vector<weak_ptr<Rooms>> &path_b) const;
+    struct compare_by_size
+    {
+        bool operator()(const vector<weak_ptr<Rooms>> &path_a, const vector<weak_ptr<Rooms>> &path_b) const;
     };
 
     static void sort_found_paths();
 
-    explicit Ants(const int id, const weak_ptr<Rooms> &current_room) : id(id), current_room(current_room) {
+    explicit Ants(const int id, const weak_ptr<Rooms> &current_room) : id(id), current_room(current_room)
+    {
         explored_rooms.push_back(current_room);
 
         ant_actions = {
-            [this] { ant_status_wait(); },
-            [this] { ant_status_go_back(); },
-            [this] { ant_status_explore(); },
-            [this] { ant_status_move_towards_dorms(); },
-            [this] { ant_status_found_dorms(); },
-            [this] { ant_status_in_dorms(); }
-        };
+            [this]
+            { ant_status_wait(); },
+            [this]
+            { ant_status_go_back(); },
+            [this]
+            { ant_status_explore(); },
+            [this]
+            { ant_status_move_towards_dorms(); },
+            [this]
+            { ant_status_found_dorms(); },
+            [this]
+            { ant_status_in_dorms(); }};
     };
 
     bool is_path_dead_end() const;
@@ -66,13 +75,13 @@ public:
     bool check_for_clear_path();
 
     void ant_status_explore();
-    void ant_status_move_towards_dorms ();
-    void ant_status_go_back ();
+    void ant_status_move_towards_dorms();
+    void ant_status_go_back();
     void ant_status_wait();
     void ant_status_in_dorms();
-    void ant_status_found_dorms ();
+    void ant_status_found_dorms();
 
     void ant_found_dorms();
 };
 
-#endif //ANTS_HPP
+#endif // ANTS_HPP

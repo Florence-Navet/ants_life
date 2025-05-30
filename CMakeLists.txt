@@ -14,12 +14,12 @@ add_executable(ants_life
         ants/anthills.json
         ants/anthills_paths.json
         ants/source/main.cpp
-        ants/header/main.hpp
+        ants/header/main.h
         ants/common/source/Ants.cpp
-        ants/common/header/Ants.hpp
+        ants/common/header/Ants.h
         ants/common/source/utils.cpp
-        ants/common/header/utils.hpp
+        ants/common/header/utils.h
         ants/common/source/Rooms.cpp
-        ants/common/header/Rooms.hpp
+        ants/common/header/Rooms.h
         ants/common/source/Anthills.cpp
-        ants/common/header/Anthills.hpp)
+        ants/common/header/Anthills.h)

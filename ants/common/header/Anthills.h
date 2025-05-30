@@ -2,22 +2,23 @@
 // Created by josur on 20/05/2025.
 //
 
-#ifndef ANTHILLS_HPP
-#define ANTHILLS_HPP
+#ifndef ANTHILLS_H
+#define ANTHILLS_H
 
-#include "utils.hpp"
+#include "utils.h"
 
 class Rooms;
 class Ants;
 
-class Anthills {
+class Anthills
+{
 public:
-    explicit Anthills(const anthill_basic_information& anthill_info) :
-        anthill_id(anthill_info.id),
-        number_of_rooms(anthill_info.number_of_rooms),
-        number_of_ants(anthill_info.number_of_ants),
-        rooms_different_capacity(anthill_info.rooms_different_capacity),
-        different_capacities(anthill_info.different_capacities) {
+    explicit Anthills(const anthill_basic_information &anthill_info) : anthill_id(anthill_info.id),
+                                                                       number_of_rooms(anthill_info.number_of_rooms),
+                                                                       number_of_ants(anthill_info.number_of_ants),
+                                                                       rooms_different_capacity(anthill_info.rooms_different_capacity),
+                                                                       different_capacities(anthill_info.different_capacities)
+    {
 
         this->saved_rooms.resize(number_of_rooms + 2);
         this->pointer_rooms.resize(number_of_rooms + 2);
@@ -28,7 +29,8 @@ public:
         generate_paths();
     };
 
-    ~Anthills() {
+    ~Anthills()
+    {
         reset_ants();
         reset_rooms();
     }
@@ -59,4 +61,4 @@ public:
     void reset_ants();
 };
 
-#endif //ANTHILLS_HPP
+#endif // ANTHILLS_HPP

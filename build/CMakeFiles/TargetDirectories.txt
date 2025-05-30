@@ -1,0 +1,5 @@
+C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/build/CMakeFiles/ants_life.dir
+C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/build/CMakeFiles/package.dir
+C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/build/CMakeFiles/package_source.dir
+C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/build/CMakeFiles/edit_cache.dir
+C:/Users/enola/Desktop/LAPLATEFORMEEXERCICE/LAPLATEFORME2025/c++/ants_life/build/CMakeFiles/rebuild_cache.dir
