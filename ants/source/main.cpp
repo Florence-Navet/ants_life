@@ -7,37 +7,15 @@
 vector<vector<weak_ptr<Rooms>>> Ants::found_paths;
 
 int main() {
+    // anthill 0-5, 6 : 3d, 7 : everything, 8 : waiting, 9 : corridors
 
-    constexpr long chosen_anthill = 1;
+    constexpr long chosen_anthill = 5;
 
     const anthill_basic_information anthill_info = read_anthill_json_file(chosen_anthill);
 
-    const Anthills anthill(anthill_info);
+    Anthills anthill(anthill_info);
 
-    bool ants_home = false;
-    long int rounds = 0;
-
-    while (!ants_home) {
-        rounds++;
-
-        cout << "Etape " << rounds << endl;
-
-        for (const shared_ptr<Ants>& ant : anthill.saved_ants) {
-            ant->act();
-            if (ant->ant_action != Ants::IN_DORMS) {
-                cout << ant->ant_status << endl;
-            }
-        }
-        if (anthill.saved_rooms.at(anthill.number_of_rooms + 1)->occupying_ants == anthill.number_of_ants) {
-            ants_home = true;
-            cout << "Toutes les fourmies sont rentrees au dortoir !!\n Fourmilliere finie en " <<
-                rounds << " etapes !" << endl;
-        }
-        if (rounds > 500) {
-            cout << "Les fourmis ne rentreront jamais au dortoirs...." << endl;
-            return 5;
-        }
-    }
+    anthill.start_finding_dorms();
 
     return 0;
 }

@@ -19,6 +19,12 @@ bool Ants::compare_by_size::operator()(const vector<weak_ptr<Rooms> > &path_a, c
     return (path_a.size() < path_b.size());
 }
 
+void Ants::sort_found_paths() {
+    if (found_paths.size() > 1) {
+        sort(found_paths.begin(), found_paths.end(), compare_by_size());
+    }
+}
+
 void Ants::check_paths() {
     bool ant_acted = false;
 
@@ -55,15 +61,6 @@ bool Ants::check_in_or_near_dorms() {
         return true;
     }
 
-    const auto iterator = find_if(
-        current_room.lock()->next_rooms.begin(),
-        current_room.lock()->next_rooms.end(),
-        [](const weak_ptr<Rooms> &room){if (room.lock()->name == "Sd") {return true;} return false;});
-
-    if (iterator != current_room.lock()->next_rooms.end()) {
-        next_room = *iterator;
-    }
-
     // Look for dorms near ant's current room
     for (const weak_ptr<Rooms> &searching_dorms : current_room.lock()->next_rooms) {
 
@@ -82,17 +79,27 @@ bool Ants::check_found_paths() {
     // Look for a known path that lead to the dorms
 
     for (vector<weak_ptr<Rooms> > &found_path: found_paths) {
-        for (auto known_room_iterator = found_path.rbegin(); known_room_iterator != found_path.rend(); ++known_room_iterator) {
+
+        for (
+            auto known_room_iterator = found_path.rbegin();
+            known_room_iterator != found_path.rend();
+            ++known_room_iterator) {
 
             for (weak_ptr<Rooms> &potential_room : current_room.lock()->next_rooms) {
 
                 if (potential_room.lock() == known_room_iterator->lock() &&
                     potential_room.lock()->is_room_free()) {
 
-                    if (path_from_entry.empty() == false &&
-                        found_clear_path() == false) {
+                    if (path_from_entry.empty() == false) {
 
                         if (potential_room.lock() == path_from_entry.at(path_from_entry.size() - 1).lock()) {
+
+                            if (current_room.lock()->number_of_paths == 1 ||
+                                current_room.lock()->is_room_flagged_dead_end() == true ||
+                                is_path_dead_end() == true) {
+
+                                current_room.lock()->flag_as_dead_end();
+                            }
 
                             next_room = potential_room;
                             ant_action = GO_BACK;
@@ -120,9 +127,14 @@ bool Ants::check_dead_end() {
 
         const weak_ptr<Rooms> &entry_room = path_from_entry.at(path_from_entry.size() - 1);
 
-        if (current_room.lock()->next_rooms.size() == 1 ||
-            found_clear_path() == false) {
+        if (current_room.lock()->number_of_paths == 1 ||
+            is_path_dead_end() == true ||
+            current_room.lock()->is_room_flagged_dead_end() == true) {
+
+            current_room.lock()->flag_as_dead_end();
+
             if (entry_room.lock()->is_room_free()) {
+                // current_room.lock()->flag_as_dead_end();
                 next_room = entry_room;
                 ant_action = GO_BACK;
                 return true;
@@ -141,7 +153,8 @@ bool Ants::check_for_clear_path() {
 
         for (weak_ptr<Rooms> &explored_room : explored_rooms) {
 
-            if (near_room.lock() != explored_room.lock() && near_room.lock()->is_room_free()) {
+            if (near_room.lock() != explored_room.lock() &&
+                near_room.lock()->is_room_free()) {
 
                 next_room = near_room;
                 ant_action = EXPLORE;
@@ -153,91 +166,89 @@ bool Ants::check_for_clear_path() {
     return false;
 }
 
-bool Ants::found_clear_path() const {
-    bool clear_path_ahead = false;
-    for (weak_ptr<Rooms> &near_room : current_room.lock()->next_rooms) {
-        if (path_from_entry.empty() == false) {
-            if (near_room.lock() == path_from_entry.at(path_from_entry.size() - 1).lock()) {
-                if (near_room.lock()->is_room_free()) {
-                    clear_path_ahead = true;
+bool Ants::is_path_dead_end() const {
+
+    bool path_is_dead_end = true;
+
+    if (path_from_entry.empty() == false) {
+
+        for (weak_ptr<Rooms> &near_room : current_room.lock()->next_rooms) {
+
+            if (near_room.lock() != path_from_entry.at(path_from_entry.size() - 1).lock()) {
+
+                if (near_room.lock()->is_room_flagged_dead_end() == false) {
+
+                    path_is_dead_end = false;
                 }
             }
         }
     }
-    return clear_path_ahead;
+    return path_is_dead_end;
 }
-
 
 void Ants::act() {
+
     check_paths();
 
-    if (ant_action == WAIT || ant_action == IN_DORMS) {
-        ant_wait();
-    }else {
-        ant_move();
+    ant_actions.at(ant_action)();
 
-        if (ant_action == FOUND_DORMS) {
-            ant_in_dorms();
+    if (ant_action != WAIT && ant_action != IN_DORMS) {
+        current_room.lock()->leave_room();
+
+        if (ant_action == GO_BACK) {
+            path_from_entry.pop_back();
+        } else {
+            path_from_entry.push_back(current_room);
         }
-    }
-}
 
-void Ants::ant_move() {
-    switch (ant_action) {
-        case MOVE_TOWARDS_DORMS:
-            ant_status = "La fourmi " + to_string(id) + " suit le chemin vers le dortoir de la salle " +
-            current_room.lock()->name + " vers la salle " + next_room.lock()->name + "\n";
-            break;
-        case GO_BACK:
-            ant_status = "La fourmi " + to_string(id) + " fait demi-tour de la salle " +
-            current_room.lock()->name + " vers la salle " + next_room.lock()->name + "\n";
-            break;
-        case EXPLORE:
-            ant_status = "La fourmi " + to_string(id) + " explore en allant de la salle " +
-            current_room.lock()->name + " vers la salle " + next_room.lock()->name + "\n";
-            break;
-        case FOUND_DORMS:
-            ant_status = "La fourmi " + to_string(id) + " trouve et entre dans le dortoir depuis la salle " +
-            current_room.lock()->name + "\n";
-            break;
-        default:
-            ant_status = "La fourmi " + to_string(id) + " se deplace de la salle " +
-            current_room.lock()->name + " vers la salle " + next_room.lock()->name + "\n";
-            break;
-    }
-
-    current_room.lock()->leave_room();
-
-    if (ant_action == GO_BACK) {
-        path_from_entry.pop_back();
-    } else {
-        path_from_entry.push_back(current_room);
-    }
-
-    bool room_explored = false;
-    for (weak_ptr<Rooms> &room : explored_rooms) {
-        if (current_room.lock() == room.lock()) {
-            room_explored = true;
-            break;
+        bool room_explored = false;
+        for (weak_ptr<Rooms> &room : explored_rooms) {
+            if (current_room.lock() == room.lock()) {
+                room_explored = true;
+                break;
+            }
         }
-    }
-    if (room_explored == false) {
-        explored_rooms.push_back(current_room);
-    }
+        if (room_explored == false) {
+            explored_rooms.push_back(current_room);
+        }
 
-    next_room.lock()->enter_room();
-    current_room = next_room;
-}
-
-void Ants::ant_wait() {
-    if (ant_action == IN_DORMS) {
-        ant_status = "";
-    } else {
-        ant_status = "La fourmi " + to_string(id) + " attend en salle " + current_room.lock()->name + ".\n";
+        next_room.lock()->enter_room();
+        current_room = next_room;
+    } else if (ant_action == FOUND_DORMS) {
+        ant_found_dorms();
     }
 }
 
-void Ants::ant_in_dorms() {
+void Ants::ant_status_explore() {
+    ant_status = "La fourmi " + to_string(id) + " explore en allant de la salle " +
+        current_room.lock()->name + " vers la salle " + next_room.lock()->name + "\n";
+}
+
+void Ants::ant_status_move_towards_dorms () {
+    ant_status = "La fourmi " + to_string(id) + " suit le chemin vers le dortoir de la salle " +
+        current_room.lock()->name + " vers la salle " + next_room.lock()->name + "\n";
+}
+
+void Ants::ant_status_go_back () {
+    ant_status = "La fourmi " + to_string(id) + " fait demi-tour de la salle " +
+        current_room.lock()->name + " vers la salle " + next_room.lock()->name + "\n";
+}
+
+void Ants::ant_status_wait() {
+    ant_status = "La fourmi " + to_string(id) + " attend en salle " +
+        current_room.lock()->name + ".\n";
+}
+
+void Ants::ant_status_in_dorms() {
+    ant_status = "";
+}
+
+void Ants::ant_status_found_dorms () {
+    ant_status = "La fourmi " + to_string(id) + " trouve et entre dans le dortoir depuis la salle " +
+        current_room.lock()->name + "\n";
+}
+
+void Ants::ant_found_dorms() {
     path_from_entry.push_back(current_room);
 
     if (found_paths.empty() == true) {
@@ -279,8 +290,3 @@ void Ants::ant_in_dorms() {
     }
 }
 
-void Ants::sort_found_paths() {
-    if (found_paths.size() > 1) {
-        sort(found_paths.begin(), found_paths.end(), compare_by_size());
-    }
-}

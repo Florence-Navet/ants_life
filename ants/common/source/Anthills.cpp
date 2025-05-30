@@ -59,22 +59,39 @@ void Anthills::generate_paths() const {
         saved_rooms.at(vector_index)->declare_paths(next_rooms);
         cout << endl;
     }
-
-    // const vector<function<void()>> anthill_path_generation = {
-    //     [this]{ anthill_zero(); },
-    //     [this]{ anthill_one(); },
-    //     [this]{ anthill_two(); },
-    //     [this]{ anthill_three(); },
-    //     [this]{ anthill_four(); },
-    //     [this]{ anthill_five(); },
-    //     [this]{ anthill_everything(); },
-    //     [this]{ anthill_3d(); },
-    //     [this]{ anthill_waiting(); },
-    //     [this]{ anthill_corridors(); }
-    // };
-    //
-    // anthill_path_generation.at(anthill_id)();
 }
+
+void Anthills::start_finding_dorms() {
+
+    bool first_found_dorms = false;
+
+    while (!ants_home) {
+        rounds++;
+
+        cout << "Etape " << rounds << endl;
+
+        for (const shared_ptr<Ants>& ant : saved_ants) {
+            ant->act();
+            if (ant->ant_action != Ants::IN_DORMS) {
+                cout << ant->ant_status << endl;
+            }
+        }
+        if (saved_rooms.at(number_of_rooms + 1)->occupying_ants > 0 && first_found_dorms == false) {
+            first_found_dorms = true;
+            first_round_in_dorms = rounds;
+        }
+        if (saved_rooms.at(number_of_rooms + 1)->occupying_ants == number_of_ants) {
+            ants_home = true;
+            cout << "Toutes les fourmies sont rentrees au dortoir !!\n Fourmilliere finie en " <<
+                rounds << " etapes !" << endl;
+        }
+        if (rounds > 500) {
+            cout << "Les fourmis ne rentreront jamais au dortoirs...." << endl;
+            return;
+        }
+    }
+}
+
 
 void Anthills::reset_rooms() {
     for (shared_ptr<Rooms> &room : saved_rooms) {

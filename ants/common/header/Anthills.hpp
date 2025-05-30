@@ -49,18 +49,11 @@ public:
     void generate_rooms();
     void generate_paths() const;
 
-    void anthill_zero() const;
-    void anthill_one() const;
-    void anthill_two() const;
-    void anthill_three() const;
-    void anthill_four() const;
-    void anthill_five() const;
+    bool ants_home = false;
+    long int rounds = 0;
+    long int first_round_in_dorms = 0;
 
-    void anthill_everything() const;
-    void anthill_3d() const;
-    void anthill_waiting() const;
-
-    void anthill_corridors() const;
+    void start_finding_dorms();
 
     void reset_rooms();
     void reset_ants();

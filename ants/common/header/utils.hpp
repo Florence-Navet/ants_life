@@ -26,16 +26,17 @@ typedef struct {
     vector<int> different_capacities;
 } anthill_basic_information;
 
-const array<string, 9> anthill_names = {
+const array<string, 10> anthill_names = {
+    "anthill_0",
     "anthill_1",
     "anthill_2",
     "anthill_3",
     "anthill_4",
     "anthill_5",
-    "anthill_6",
     "anthill_3d",
     "anthill_everything",
-    "anthill_waiting"
+    "anthill_waiting",
+    "anthill_corridors"
 };
 
 anthill_basic_information read_anthill_json_file(int anthill_index);

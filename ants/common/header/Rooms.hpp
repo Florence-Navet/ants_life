@@ -19,6 +19,7 @@ public:
     unsigned long long number_of_paths = 0;
     vector<weak_ptr<Rooms>> next_rooms;
     int occupying_ants = 0;
+    bool flagged_as_dead_end = false;
 
     explicit Rooms(string name, const int capacity = 1) : name(move(name)), capacity(capacity){}
 
@@ -29,6 +30,14 @@ public:
 
     bool is_room_free() const {
         return capacity - occupying_ants > 0;
+    }
+
+    bool is_room_flagged_dead_end() const {
+        return flagged_as_dead_end;
+    }
+
+    void flag_as_dead_end() {
+        flagged_as_dead_end = true;
     }
 
     void enter_room() {

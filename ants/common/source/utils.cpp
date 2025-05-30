@@ -14,7 +14,7 @@ anthill_basic_information read_anthill_json_file(const int anthill_index) {
 
     basic_json<> chosen_anthill_data = data.at(anthill_names.at(anthill_index));
 
-    anthill.id = chosen_anthill_data.at("id");
+    anthill.id = anthill_index;
     anthill.number_of_rooms = chosen_anthill_data.at("number_of_rooms");
     anthill.number_of_ants = chosen_anthill_data.at("number_of_ants");
 
@@ -43,11 +43,11 @@ vector<vector<int>> read_anthill_paths_json_file(const int anthill_index) {
 
     int vector_index = 0;
 
-    for (const basic_json<>& paths_vector : chosen_anthill_data) {
+    for (int path_index = 0; path_index < chosen_anthill_data.size(); path_index++) {
 
-        anthill_paths.at(vector_index).reserve(paths_vector.size());
+        anthill_paths.at(vector_index).reserve(chosen_anthill_data.at(to_string(path_index)).size());
 
-        for (const int room_index : paths_vector) {
+        for (const int room_index : chosen_anthill_data.at(to_string(path_index))) {
 
             anthill_paths.at(vector_index).push_back(room_index);
         }
