@@ -1,3 +1,3 @@
 # ants_life  
 
-![fourmiiere](ants_life.png)
+![fourmiiere](img/ants_life.png)
